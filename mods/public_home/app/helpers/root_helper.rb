@@ -9,9 +9,10 @@ module RootHelper
         format_text(message)
     end
   end
+
   def sidebar_top_partial
     if logged_in?
-      'sitebox_top'
+      'sidebox_top'
     else
       '/account/login_form_box'
     end

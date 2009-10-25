@@ -47,8 +47,8 @@ module RootHelper
     @group.profiles.public.summary_html
   end
 
-  def sitebar_top_partial
-    'sitebox_top'
+  def sidebar_top_partial
+    'sidebox_top'
   end
 end
 
