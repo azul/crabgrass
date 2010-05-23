@@ -37,9 +37,10 @@ namespace :cg do
         next if line =~ /^#/
         row = line.split("\t")
         options = {:code => row[0], :name => row[4]}
-        country = GeoCountry.find_by_code(row[0])
+        next unless options[:code] and options[:name]
+        country = GeoCountry.find_by_code(options[:code])
         if country.nil?
-          STDERR.puts "Adding new country #{row[4]}"
+          STDERR.puts "Adding new country #{options[:name]}"
           GeoCountry.create!(options)
         else
           STDERR.puts "Updating country #{country.name}"
@@ -54,6 +55,7 @@ namespace :cg do
         row[1].sub!(/^(.*\S)\s*$/, '\1')
         row[1] = subrow[1] if row[1] !~ /\S/## use the code if the name is blank
         geocountry = GeoCountry.find_by_code(subrow[0])
+        next if geocountry.nil?
         options = {:geo_country_id => geocountry.id, :admin1_code => subrow[1], :name => row[1]}
         geoadmincode = geocountry.geo_admin_codes.find_by_admin1_code(subrow[1])
         if geoadmincode.nil?

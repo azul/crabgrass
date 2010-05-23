@@ -11,7 +11,7 @@ set :application, "crabgrass"
 set :user, "crabgrass"
 
 set :repository, "ssh://git@193.138.105.69:123/crabgrass.git"
-set :branch, "unido-0.5.1.1"
+set :branch, "unido-0.5.x"
 
 deploy_host = "193.138.105.70"
 staging_host = "193.138.105.69"
@@ -43,7 +43,7 @@ set :copy_exclude, [".git"]
 
 set :git_shallow_clone, 1  # only copy the most recent, not the entire repository (default:1)
 set :git_enable_submodules, 0
-set :keep_releases, 5
+set :keep_releases, 3
 
 ssh_options[:paranoid] = false
 set :use_sudo, false
