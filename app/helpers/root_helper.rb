@@ -47,9 +47,12 @@ module RootHelper
     call_hook :home_sidebar
   end
 
+  # the welcome_home_message key can be used to overwrite the message on site home.
+  # This allows for translations of this message. If it is not set we fall back
+  # to the site networks summary.
   def home_summary_html
     translation=I18n.t :welcome_home_message,
-      :default => @group.profiles.public.summary
+      :default => ( @group.profiles.public.summary || '' )
     format_text(translation)
   end
 
