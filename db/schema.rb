@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100510212536) do
+ActiveRecord::Schema.define(:version => 20100512084346) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id",   :limit => 11
@@ -383,7 +383,6 @@ ActiveRecord::Schema.define(:version => 20100510212536) do
   end
 
   create_table "moderated_flags", :force => true do |t|
-    t.string   "type",                         :null => false
     t.datetime "vetted_at"
     t.integer  "vetted_by_id",   :limit => 11
     t.datetime "deleted_at"
@@ -393,7 +392,8 @@ ActiveRecord::Schema.define(:version => 20100510212536) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id",        :limit => 11
-    t.integer  "foreign_id",     :limit => 11, :null => false
+    t.integer  "flagged_id",     :limit => 11
+    t.string   "flagged_type"
   end
 
   create_table "page_histories", :force => true do |t|
@@ -526,9 +526,9 @@ ActiveRecord::Schema.define(:version => 20100510212536) do
     t.datetime "updated_at"
     t.datetime "deleted_at"
     t.string   "type"
+    t.integer  "page_terms_id", :limit => 11
     t.boolean  "vetted",                              :default => false
     t.integer  "yuck_count",    :limit => 11,         :default => 0
-    t.integer  "page_terms_id", :limit => 11
   end
 
   add_index "posts", ["user_id"], :name => "index_posts_on_user_id"
@@ -583,8 +583,8 @@ ActiveRecord::Schema.define(:version => 20100510212536) do
     t.string   "place"
     t.integer  "video_id",               :limit => 11
     t.text     "summary_html",           :limit => 2147483647
-    t.boolean  "admins_may_moderate"
     t.integer  "geo_location_id",        :limit => 11
+    t.boolean  "admins_may_moderate"
   end
 
   add_index "profiles", ["entity_id", "entity_type", "language", "stranger", "peer", "friend", "foe"], :name => "profiles_index"
@@ -681,8 +681,8 @@ ActiveRecord::Schema.define(:version => 20100510212536) do
     t.string  "email_sender_name",      :limit => 40
     t.string  "profiles"
     t.string  "profile_fields"
-    t.integer "moderation_group_id",    :limit => 11
     t.boolean "require_user_full_info"
+    t.integer "moderation_group_id",    :limit => 11
   end
 
   add_index "sites", ["name"], :name => "index_sites_on_name", :unique => true
