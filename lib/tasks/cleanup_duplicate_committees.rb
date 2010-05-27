@@ -46,7 +46,8 @@ namespace :cg do
               # it causes the destruction to fail when saving the
               # committee. Everything that is left to do is save the
               # parent and really delete the committee
-              parent.org_structure_changed
+              User.clear_membership_cache(parent.user_ids)
+              parent.version += 1
               parent.save!
               parent.committees.reset
               Group.delete_all("id = %s" % g.id) if do_it
