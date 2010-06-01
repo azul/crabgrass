@@ -46,6 +46,7 @@ email:
 #    user_name: xxxxxx@gmail.com
 #    password: xxxxxxx
 
+text_editor: html_only
 ##
 ## SITES
 sites:
