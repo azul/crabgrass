@@ -48,6 +48,8 @@ unless File.exists?(GALLERY_ZIP_PATH)
   Dir.mkdir(GALLERY_ZIP_PATH)
 end
 
+PASTES_LOG = "#{RAILS_ROOT}/log/pastes.log"
+
 # possible in plugin?
 #class Rails::Configuration
 #  attr_accessor :action_web_service

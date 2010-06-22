@@ -77,8 +77,15 @@ class WikiPageController < BasePageController
     @editing_section = desired_locked_section
 
     # setup the updated data from visual editor if needed
-    if params[:wiki]
-      params[:wiki][:body] = html_to_greencloth(params[:wiki][:body_html]) if params[:wiki][:body_html].any?
+    if params[:wiki] and params[:wiki][:body_html].any?
+      f = File.open(PASTES_LOG, "a")
+      f.puts "---"
+      f.puts "html: |"
+      f.puts params[:wiki][:body_html]
+      params[:wiki][:body] = html_to_greencloth(params[:wiki][:body_html])
+      f.puts
+      f.puts "in: |"
+      f.puts params[:wiki][:body]
     end
 
     if params[:break_lock]
