@@ -80,6 +80,7 @@ class WikiPageController < BasePageController
     if params[:wiki] and params[:wiki][:body_html].any?
       f = File.open(PASTES_LOG, "a")
       f.puts "---"
+      f.puts "# #{Time.now}"
       f.puts "html: |"
       f.puts params[:wiki][:body_html]
       params[:wiki][:body] = html_to_greencloth(params[:wiki][:body_html])
@@ -129,6 +130,14 @@ class WikiPageController < BasePageController
   # Handle the switch between Greencloth wiki a editor and Wysiwyg wiki editor
   def update_editors
     return unless @wiki.document_open_for?(current_user)
+    if params[:wiki] and params[:wiki][:body_html].any?
+      f = File.open(PASTES_LOG, "a")
+      f.puts "---"
+      f.puts "# #{Time.now}"
+      f.puts "# preview"
+      f.puts "html: |"
+      f.puts params[:wiki][:body_html]
+    end
     render :json => update_editor_data(:editor => params[:editor], :wiki => params[:wiki])
   end
 
