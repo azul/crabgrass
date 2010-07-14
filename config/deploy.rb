@@ -13,7 +13,7 @@ set :user, "crabgrass"
 set :repository, "ssh://git@193.138.105.69:123/crabgrass.git"
 set :branch, "unido-wiz"
 
-#deploy_host = "193.138.105.70"
+deploy_host = "193.138.105.70"
 staging_host = "193.138.105.69"
 
 staging = ENV['TARGET'] != 'production'
