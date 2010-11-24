@@ -86,6 +86,15 @@ sites:
     default: false
     admin_group: mdg-admins
     moderation_group: mdg-admins
+  - name: westafrica
+    domain: westafrica.unidoplatform.org
+    network: westafrica-site
+    title: "Westafrica Platform"
+    limited: true
+    email_sender: 'my@westafrica.unidoplatform.org'
+    default: false
+    admin_group: westafrica-admins
+    moderation_group: westafrica-mods
 
 ##
 ## SITE DEFAULTS
