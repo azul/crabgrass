@@ -94,13 +94,17 @@ class Site < ActiveRecord::Base
   # whatever crabgrass.*.yml gets loaded).
   def self.proxy_to_conf(*attributes)
     attributes.each do |attribute|
-      define_method(attribute) { (value = read_attribute(attribute.to_s.sub(/\?$/,''))).nil? ? Conf.send(attribute) : value }
+      define_method(attribute) do
+        attrib=attribute.to_s.sub(/\?$/,'')
+        site_conf = Conf.sites.find{|s| s[:name] = self.name} || {}
+        read_attribute(attrib) || site_conf[attrib] || Conf.send(attribute)
+      end
     end
   end
 
-  proxy_to_conf :name, :title, :pagination_size, :default_language,
+  proxy_to_conf :title, :pagination_size, :default_language,
     :email_sender, :email_sender_name, :available_page_types, :tracking, :evil,
-    :enforce_ssl, :show_exceptions, :require_user_email, :require_user_full_info, :domain, :profiles,
+    :enforce_ssl, :show_exceptions, :require_user_email, :require_user_full_info, :profiles,
     :profile_fields, :chat?, :translation_group, :limited?, :signup_mode, :dev_email
 
   def profile_field_enabled?(field)
