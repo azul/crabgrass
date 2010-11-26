@@ -64,14 +64,13 @@ namespace :cg do
 
     def verify_group_site(group, site)
       # what happens if site does not exist because we are in testing mode?
-      return unless site.limited? and group.site_id != site.id
+      return if !site.limited? or group.site == site.id
       react "#{group.name} does not belong to site yet."
-      unless group.site_id
-        react "Attaching to site..."
-        group.site = site
-      else
+      if group.site_id
         raise "#{group.name} belongs to a different site. Aborting..."
       end
+      react "Attaching to site..."
+      group.site = site
       return group
     end
 
