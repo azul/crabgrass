@@ -149,7 +149,8 @@ namespace :cg do
       else
         puts "  site does not exist yet... creating"
         site = Site.new :name=>site_conf['name'],
-          :limited => site_conf['limited'] || Conf.limited || true
+          :limited => (site_conf['limited'] || Conf.limited || true),
+          :domain => site_conf['domain']
       end
       ['moderation_group','admin_group', 'network'].each do |group_type|
         group = verify_group_type(site, site_conf, group_type)
