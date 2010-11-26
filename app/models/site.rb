@@ -96,7 +96,7 @@ class Site < ActiveRecord::Base
     attributes.each do |attribute|
       define_method(attribute) do
         attrib=attribute.to_s.sub(/\?$/,'')
-        site_conf = Conf.sites.find{|s| s[:name] = self.name} || {}
+        site_conf = Conf.sites.find{|s| s['name'] = self.name} || {}
         read_attribute(attrib) || site_conf[attrib] || Conf.send(attribute)
       end
     end
