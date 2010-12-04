@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class SocialUserTest < Test::Unit::TestCase
 
-  fixtures :users, :groups, :pages, :relationships
+  fixtures :users, :groups, :pages, :relationships, :memberships
 
   def setup
     Time.zone = TimeZone["Pacific Time (US & Canada)"]
@@ -17,7 +17,7 @@ class SocialUserTest < Test::Unit::TestCase
     assert !u2.peer_of?(u1), 'red and kangaroo should not be peers'
 
     group.add_user! u1
-    group.add_user! u2
+    assert u2.member_of?(group)
     u1.reload; u2.reload
 
     assert u1.peer_of?(u2), 'user with membership change (red) should have other user (kangaroo) as a peer'
@@ -55,9 +55,8 @@ class SocialUserTest < Test::Unit::TestCase
     assert !users(:kangaroo).may_pester?(green), 'strangers should be not be able to pester'
 
     red = users(:red)
-    group.add_user! red
-    group.add_user! green
-    red.reload; green.reload;
+    assert red.member_of?(group)
+    assert green.member_of?(group)
     assert red.peer_of?(green), 'must be peers'
     assert !red.may_pester?(green), 'peers should not be able to pester'
 
