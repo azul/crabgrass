@@ -56,5 +56,12 @@ module RootHelper
     format_text(translation)
   end
 
+  def titlebox_description_html
+    @group.profiles.public.summary_html
+  end
+
+  def sidebar_top_partial
+    'sidebox_top'
+  end
 end
 

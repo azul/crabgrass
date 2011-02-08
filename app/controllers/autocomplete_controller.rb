@@ -87,9 +87,17 @@ class AutocompleteController < ApplicationController
   end
 
   def locations
-    return if params[:query] == ""
-    filter = "#{params[:query]}%"
-    locations = GeoPlace.find(:all, :conditions => ["name LIKE ?", filter], :limit => 20)
+    if params[:country].blank? or params[:country] == 'Country'
+      locations = []
+    elsif params[:query] == ""
+      # we could preload if we had the country, but this is still expensive if there are a lot of places
+      # perhaps we could do a count first and preload if it's a reasonable amount, or preload cities witha high population?
+      #locations = GeoPlace.find(:all, :conditions => ["geo_country_id = ?", params[:country]])
+      locations = []
+    else
+      filter = "#{params[:query]}%"
+      locations = GeoPlace.find(:all, :conditions => ["geo_country_id = ? and name LIKE ?", params[:country], filter], :limit => 20)
+    end
     render_locations_to_json(locations)
   end
 
@@ -98,7 +106,7 @@ class AutocompleteController < ApplicationController
   def render_entities_to_json(entities)
     render :json => {
       :query => params[:query],
-      :suggestions => entities.collect{|e|display_on_two_lines(e.display_name, h(e.name))}
+      :suggestions => entities.collect{|e|display_on_two_lines(e.display_name, h(e.name))},
       :data => entities.collect{|e|e.avatar_id||0}
     }
   end
@@ -106,7 +114,8 @@ class AutocompleteController < ApplicationController
   def render_locations_to_json(locations)
     render :json => {
       :query => params[:query],
-      :suggestions => locations.collect{|loc|display_on_two_lines(loc.name, loc.geo_admin_code.name)}
+      :suggestions => locations.collect{|loc|display_on_two_lines(loc.name, loc.geo_admin_code.name)},
+      :data => locations.collect{|loc|loc.id}
     }
   end
 
