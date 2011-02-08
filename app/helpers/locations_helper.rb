@@ -2,11 +2,13 @@ module LocationsHelper
 
   # <%= select('group','location', GeoCountry.find(:all).to_select(:name, :code), {:include_blank => true}) %>
   def country_dropdown(object=nil, method=nil, options={})
+    profile_id_param = @profile ? "profile_id=#{@profile.id}&" : nil
+    admin_codes_param = options[:show_admin_codes] ? "show_admin_codes=1&" : nil
     name = _field_name('country_id', object, method)
     show_submit = options[:show_submit] || false 
     onchange = remote_function(
-      :url => {:controller => '/locations', :action => 'all_admin_codes_options'},
-      :with => "'select_state_name='+$('select_state_id').name+'&show_submit=#{show_submit}&country_code='+value",
+      :url => {:controller => '/locations', :action => 'country_dropdown_onchange'},
+      :with => "'#{admin_codes_param}#{profile_id_param}show_submit=#{show_submit}&country_code='+value",
       :loading => show_spinner('country'),
       :complete => hide_spinner('country')
     ) 
@@ -32,18 +34,18 @@ module LocationsHelper
   def city_text_field(object=nil, method=nil, options = {})
     display = _display_value(params[:country_id])
     name = _field_name('city_name', object, method)
-    spinner = options[:spinner]
-    onblur = remote_function(
-      :url => {:controller => '/locations', :action => 'city_lookup'},
-      :with => "'city_id_name='+$('city_id_field').name+'&country_id='+$('select_country_id').value+'&admin_code_id='+$('select_state_id').value+'&city='+value",
-      :loading => show_spinner('city'),
-      :complete => hide_spinner('city')
-    )
-    if params[:city_id] =~ /\d+/
-      city = GeoPlace.find(params[:city_id])
-    end
-    value = city.nil? ? {} : {:value => city.name} 
-    options = {:onblur => onblur, :name => name, :id=> 'city_text_field'}.merge(value)
+    #spinner = options[:spinner]
+    #onblur = remote_function(
+    #  :url => {:controller => '/locations', :action => 'city_lookup'},
+    #  :with => "'city_id_name='+$('city_id_field').name+'&country_id='+$('select_country_id').value+'&admin_code_id='+$('select_state_id').value+'&city='+value",
+    #  :loading => show_spinner('city'),
+    #  :complete => hide_spinner('city')
+    #)
+    #if params[:city_id] =~ /\d+/
+    #  city = GeoPlace.find(params[:city_id])
+    #end
+    #value = city.nil? ? {} : {:value => city.name} 
+    options = {:name => name, :id=> 'city_text_field'}  #.merge(value)
     render :partial => '/locations/city_text_field', :locals => {:display => display, :object=>object, :method=>method, :options => options}
   end
 
