@@ -24,6 +24,7 @@ enabled_mods:
   - moderation
   - unido
   - public_home
+  - locations_to_kml
 enabled_tools:
   - asset_tool
   - core_tools
