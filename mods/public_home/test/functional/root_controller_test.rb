@@ -11,31 +11,26 @@ class RootControllerTest < ActionController::TestCase
 
     with_site :test do
       get :index
-      assert_response :success
+      assert_site_home
     end
   end
 
   def test_still_redirect_without_site
     login_as :red
     get :index
-    assert_response :redirect
+    assert_me_page
   end
 
-  def test_index_not_logged_in
+  def test_site_home_not_logged_in
     with_site :test do
       get :index
-      assert_response :success
-      assert_not_nil assigns["current_site"].id
-      assert_not_nil assigns["group"]
-      assert_template 'root/site_home'
+      assert_site_home
     end
   end
 
   def test_normal_login_without_site
     get :index
-    assert_response :success
-    assert_nil assigns["current_site"].id
-    assert_template 'account/index'
+    assert_login_page
   end
 
   def test_normal_login_with_hidden_network
@@ -45,25 +40,20 @@ class RootControllerTest < ActionController::TestCase
     profile.save
     with_site :test do
       get :index
-      assert_response :success
-      assert assigns["current_site"]
-      assert_template 'account/index'
+      assert_login_page
     end
   end
 
   def test_site_home_content
     with_site :test do
       get :index
-      assert_response :success
+      assert_site_home
 
-      # just make sure the Site specific stuff worked...
-      assert_not_nil assigns["current_site"].id,
-        "Response did not come from the site we expected."
-      current_site=assigns["current_site"]
-
-      assert_not_equal @controller.send(:most_active_users), [],
+      site_id = assigns['current_site'].id
+      most_active_users = @controller.send(:most_active_users)
+      assert_not_equal [], most_active_users
         "Expecting a list of most active users."
-      assert_nil @controller.send(:most_active_users).detect{|u| !u.site_ids.include?(current_site.id)},
+      assert_nil most_active_users.detect{|u| !u.site_ids.include?(site_id)},
         "All users should be on current_site."
     end
   end
