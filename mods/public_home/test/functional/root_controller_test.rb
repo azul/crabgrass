@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class RootControllerTest < ActionController::TestCase
   fixtures :groups, :users, :pages, :memberships,
@@ -13,24 +13,45 @@ class RootControllerTest < ActionController::TestCase
       get :index
       assert_response :success
     end
+  end
 
+  def test_still_redirect_without_site
+    login_as :red
     get :index
     assert_response :redirect
   end
 
   def test_index_not_logged_in
-
     with_site :test do
       get :index
       assert_response :success
       assert_not_nil assigns["current_site"].id
+      assert_not_nil assigns["group"]
+      assert_template 'root/site_home'
     end
-
-    get :index
-    assert_response :success
   end
 
-  def test_site_home
+  def test_normal_login_without_site
+    get :index
+    assert_response :success
+    assert_nil assigns["current_site"].id
+    assert_template 'account/index'
+  end
+
+  def test_normal_login_with_hidden_network
+    net = sites(:test).network
+    profile = net.profiles.public
+    profile.may_see=false
+    profile.save
+    with_site :test do
+      get :index
+      assert_response :success
+      assert assigns["current_site"]
+      assert_template 'account/index'
+    end
+  end
+
+  def test_site_home_content
     with_site :test do
       get :index
       assert_response :success
