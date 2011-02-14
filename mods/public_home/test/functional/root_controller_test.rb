@@ -44,27 +44,33 @@ class RootControllerTest < ActionController::TestCase
         "Expecting a list of most active users."
       assert_nil @controller.send(:most_active_users).detect{|u| !u.site_ids.include?(current_site.id)},
         "All users should be on current_site."
-      # testing for #1929
-      assert_select "a[href='/people/directory/browse']", "View All"
-
-      assert_not_equal @controller.send(:most_active_groups), [],
-        "Expecting a list of most recent groups."
-      assert_nil @controller.send(:most_active_groups).detect{|u| u.site_id != current_site.id},
-        "All groups should be on current_site."
-      # testing for #1929
-      assert_select "a[href='/groups/directory/search']", "View All"
-
-      # testing for #1927
-      assert_no_select 'h3', "Wiki",
-        "There should be no wiki caption on site home"
-
     end
   end
 
-  def test_fetching_pages
+  def test_all_pages_public
+    page = Page.create! :site_id => sites(:test).id, :title => "hide me"
+    page.owner=users(:blue)
+    page.add sites(:test).network
+    page.save
     with_site :test do
       get :recent_pages
       assert_response :success
+      assert_not_nil pages = @controller.send(:paginate)
+      assert_nil pages.detect{|p| !p.public?}
+    end
+  end
+
+  def test_non_public_pages_when_logged_in
+    page = Page.create! :site_id => sites(:test).id, :title => "show me"
+    page.owner=users(:blue)
+    page.add sites(:test).network
+    page.save
+    login_as :blue
+    with_site :test do
+      get :recent_pages
+      assert_response :success
+      assert_not_nil pages = @controller.send(:paginate)
+      assert pages.detect{|p| !p.public?}
     end
   end
 
