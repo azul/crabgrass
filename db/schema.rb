@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100512084346) do
+ActiveRecord::Schema.define(:version => 20110223135119) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id",   :limit => 11
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(:version => 20100512084346) do
     t.decimal "latitude",                          :precision => 24, :scale => 20, :null => false
     t.decimal "longitude",                         :precision => 24, :scale => 20, :null => false
     t.integer "geo_admin_code_id", :limit => 11,                                   :null => false
+    t.integer "population",        :limit => 20
   end
 
   add_index "geo_places", ["name"], :name => "index_geo_places_on_name"
@@ -585,6 +586,7 @@ ActiveRecord::Schema.define(:version => 20100512084346) do
     t.text     "summary_html",           :limit => 2147483647
     t.integer  "geo_location_id",        :limit => 11
     t.boolean  "admins_may_moderate"
+    t.boolean  "members_may_edit_wiki",                        :default => true
   end
 
   add_index "profiles", ["entity_id", "entity_type", "language", "stranger", "peer", "friend", "foe"], :name => "profiles_index"
@@ -683,6 +685,7 @@ ActiveRecord::Schema.define(:version => 20100512084346) do
     t.string  "profile_fields"
     t.boolean "require_user_full_info"
     t.integer "moderation_group_id",    :limit => 11
+    t.boolean "never_pester_users",                           :default => false
   end
 
   add_index "sites", ["name"], :name => "index_sites_on_name", :unique => true
@@ -919,6 +922,15 @@ ActiveRecord::Schema.define(:version => 20100512084346) do
   end
 
   add_index "websites", ["profile_id"], :name => "websites_profile_id_index"
+
+  create_table "widgets", :force => true do |t|
+    t.string   "type"
+    t.integer  "parent_id",  :limit => 11
+    t.integer  "position",   :limit => 11
+    t.string   "label"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "wiki_locks", :force => true do |t|
     t.integer "wiki_id",      :limit => 11
