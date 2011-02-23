@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110223135119) do
+ActiveRecord::Schema.define(:version => 20110223135754) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id",   :limit => 11
@@ -686,6 +686,7 @@ ActiveRecord::Schema.define(:version => 20110223135119) do
     t.boolean "require_user_full_info"
     t.integer "moderation_group_id",    :limit => 11
     t.boolean "never_pester_users",                           :default => false
+    t.integer "widget_id",              :limit => 11
   end
 
   add_index "sites", ["name"], :name => "index_sites_on_name", :unique => true

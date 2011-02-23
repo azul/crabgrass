@@ -52,6 +52,7 @@ class Site < ActiveRecord::Base
   belongs_to :network
   belongs_to :custom_appearance, :dependent => :destroy
   belongs_to :council, :class_name => 'Group'
+  belongs_to :widget # root of the widget tree for site home
 
   serialize :translators, Array
   serialize :available_page_types, Array
