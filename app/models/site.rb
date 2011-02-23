@@ -180,6 +180,14 @@ class Site < ActiveRecord::Base
     end
   end
 
+  def widget
+    if self.widget_id
+      self.widget
+    else
+      self.widget = SiteRootWidget.create
+    end
+  end
+
   ##
   ## CUSTOM STRINGS
   ##
