@@ -1,0 +1,3 @@
+class TagCloudWidget < Widget
+
+end

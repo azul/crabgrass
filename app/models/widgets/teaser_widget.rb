@@ -1,0 +1,3 @@
+class TeaserWidget < Widget
+
+end

@@ -1,0 +1,3 @@
+class MapWidget < Widget
+
+end

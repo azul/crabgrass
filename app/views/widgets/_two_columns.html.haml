@@ -1,0 +1,8 @@
+- if widget.children.any?
+  .wrapper1-plus
+    .col1
+      =render_widget widget.children[0]
+  - if widget.children.count > 1
+    .wrapper1
+      .col1
+        =render_widget widget.children[1]

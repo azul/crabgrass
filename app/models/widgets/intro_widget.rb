@@ -1,0 +1,3 @@
+class IntroWidget < Widget
+
+end
