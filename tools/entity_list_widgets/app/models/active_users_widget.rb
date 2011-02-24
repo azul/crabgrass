@@ -1,0 +1,3 @@
+class ActiveUsersWidget < Widget
+
+end

@@ -1,12 +1,11 @@
 class SiteRootWidget < Widget
 
-  def partial
-    '/widgets/site_root'
-  end
-
+  debugger
   after_save :create_children
 
   def create_children
+    debugger
+    return if children.count > 0
     main = MainWidget.new :position => 0
     self.children.push main
     main.save

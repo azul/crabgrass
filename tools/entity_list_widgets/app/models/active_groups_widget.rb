@@ -1,0 +1,3 @@
+class ActiveGroupsWidget < Widget
+
+end

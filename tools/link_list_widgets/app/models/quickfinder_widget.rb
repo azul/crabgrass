@@ -1,0 +1,3 @@
+class QuickfinderWidget < Widget
+
+end

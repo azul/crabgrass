@@ -1,0 +1,3 @@
+class ToplinkWidget < Widget
+
+end
