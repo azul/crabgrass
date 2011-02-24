@@ -1,6 +1,5 @@
 class Widget < ActiveRecord::Base
 
-  debugger
   acts_as_tree :order => 'position'
 
   def partial
