@@ -148,30 +148,5 @@ class RootController < ApplicationController
       page.replace_html target, :partial => 'pages/list', :locals => locals
     end
   end
-
-  ##
-  ## lists of active groups and users. used by the view.
-  ##
-
-  helper_method :most_active_groups
-  def most_active_groups
-    Group.only_groups.most_visits.find(:all, :limit => 15)
-  end
-
-  helper_method :recently_active_groups
-  def recently_active_groups
-    Group.only_groups.recent_visits.find(:all, :limit => 10)
-  end
-
-  helper_method :most_active_users
-  def most_active_users
-    User.most_active_on(current_site, nil).not_inactive.find(:all, :limit => 15)
-  end
-
-  helper_method :recently_active_users
-  def recently_active_users
-    User.most_active_on(current_site, Time.now - 30.days).not_inactive.find(:all, :limit => 10)
-  end
-
 end
 

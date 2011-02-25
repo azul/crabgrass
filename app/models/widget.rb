@@ -8,4 +8,10 @@ class Widget < ActiveRecord::Base
     "widgets/#{file}"
   end
 
+  def edit_partial
+    file = self.class.name.underscore
+    file.sub! /_widget$/, ''
+    "widgets/#{file}/edit"
+  end
+
 end

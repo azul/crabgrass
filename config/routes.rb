@@ -27,6 +27,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :users, :only => [:new, :create]
     admin.resources :groups, :only => [:new, :create]
     admin.resources :custom_appearances, :only => [:edit, :update]
+    admin.resources :widgets
     admin.sites 'sites/:action', :controller => 'sites'
     admin.root :controller  => 'base'
   end
