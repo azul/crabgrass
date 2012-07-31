@@ -22,6 +22,8 @@ class Post < ActiveRecord::Base
   after_create :update_discussion
   after_destroy :update_discussion
 
+  attr_accessible :user, :discussion, :body, :page_terms_id
+
   ##
   ## named scopes
   ##
